@@ -1,0 +1,49 @@
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public int myAtoi(String str) {
+        //去除首尾的空格字符
+        str = str.trim();
+        //情形1：字符串为空或字符串仅包含空白字符
+        if(str.equals("")) return 0;
+        //情形2：字符串第一个非空字符不是有效整数字符
+        if(!(str.charAt(0) <= '9' && str.charAt(0) >= '0') && str.charAt(0) != '+' && str.charAt(0) != '-') return 0;
+        //情形3：首字母为“+”或“-”或数字0-9
+        int negative = 1;
+        int start = 0;
+        int ans = 0;
+        int remainder = 0;
+        int MAX = 0;
+        if(!(str.charAt(0) >= '0' && str.charAt(0) <= '9'))
+        {
+            negative = (str.charAt(0) == '-' ? -1 : 1);
+            start = 1;
+        }
+        if(negative == 1)
+        {
+            MAX = Integer.MAX_VALUE;
+            remainder = 7;
+        }            
+        else
+        {
+            MAX = Integer.MIN_VALUE;
+            remainder = 8;
+        }           
+        for(int j = start; j < str.length(); j++)
+        {
+            int k = str.charAt(j) - '0';
+            if(k >= 0 && k <= 9)
+            {
+                if(ans > Integer.MAX_VALUE/10 || (ans == Integer.MAX_VALUE/10 && k > remainder))
+                    return MAX;
+                else
+                    ans = ans * 10 + k;
+                
+            }
+            else
+                break;
+        }
+        return negative * ans;
+    }
+}
