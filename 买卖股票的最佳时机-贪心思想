@@ -1,0 +1,23 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        if(prices.length == 0) return 0;
+        int maxprofit = 0;
+        int valley = prices[0];
+        int peak = prices[0];
+        int i = 0;
+        while(i < prices.length - 1)
+        {
+            //寻找谷底，注意i小于length-1，而不是小于等于
+            while(i < prices.length - 1 && prices[i] >= prices[i + 1])
+                i++;
+            valley = prices[i];
+            //寻找峰值
+            while(i < prices.length - 1 && prices[i] <= prices[i + 1])
+                i++;
+            peak = prices[i];
+            maxprofit = peak - valley + maxprofit;
+        }
+            
+        return maxprofit;        
+    }
+}
