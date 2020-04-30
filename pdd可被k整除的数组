@@ -1,0 +1,64 @@
+1-n n个树，有和谐值Ai，如果一段连续的树，他们和谐值之和可以被m整除，那么这个 区间整体就是和谐的。求有多少个这样的区间的数量
+输入：
+第一行两个整数n、m
+第二行n个整数Ai，分别表示第i个数的和谐值
+0<=Ai<=1,000,000
+
+输出：
+满足的数量
+
+输入：
+5 2
+1 2 3 4 5
+输出
+6
+因为：
+【2】【4】
+【1 2 3】【3 4 5】
+【1 2 3 4】【2 3 4 5】
+
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] num = new int[n];
+        int m = sc.nextInt();
+        for(int i = 0; i < n; i++){
+            num[i] = sc.nextInt();
+        }
+
+        int[] sum = new int[n];
+        sum[0] = num[0];
+        for(int j = 1; j < sum.length; j++){
+            sum[j] = sum[j-1] + num[j];
+        }
+
+        int ans = solution(sum,m);
+        System.out.println(ans);
+    }
+
+    public static int solution(int[] sum,int m){
+        int ans = 0;
+        int p = 0,q = 0;
+        while(p<sum.length){
+            if(sum[p] % m == 0)
+                ans += 1;
+            q = p + 1;
+            while(q<sum.length){
+                if((sum[q] - sum[p]) % m == 0){
+                    ans += 1;
+                }
+                q++;
+            }
+            p++;
+        }
+        return ans;
+    }
+}
