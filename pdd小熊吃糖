@@ -1,0 +1,63 @@
+import java.util.*;
+
+public class Main {
+    static class Bear{
+        int id;//编号
+        int attack;//战斗力
+        int hunger;//饥饿度
+        public Bear(int id, int attack, int hunger){
+            this.id = id;
+            this.attack = attack;
+            this.hunger = hunger;
+        }
+    }
+
+    static class descComparator implements Comparator<Bear>{
+        @Override
+        public int compare(Bear o1, Bear o2) {
+            if(o1.attack != o2.attack)
+                return o1.attack - o2.attack;
+            else
+                return o1.hunger - o2.hunger;
+        }
+    }
+    public static void main(String args[]) {
+        Map<Integer,Bear> map = new HashMap<>();
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();//小熊的数量
+        int m = sc.nextInt();//糖的数量
+        int[] sugars = new int[m];
+        for(int i = 0; i < m; i++){
+            sugars[i] = sc.nextInt();
+        }
+        Bear[] bears = new Bear[n];
+        for(int i = 0; i < n; i++){
+            bears[i] = new Bear(i+1,sc.nextInt(),sc.nextInt());
+            map.put(i+1,bears[i]);
+        }
+        Arrays.sort(bears,new descComparator());
+        Arrays.sort(sugars);
+        int p = n-1;//最后一只小熊
+        while(p>=0){
+            int hunger = bears[p].hunger;
+            int q = m-1;//最大的糖
+            while(hunger > 0 && q>=0){
+                if(sugars[q] == -1){
+                    q--;
+                    continue;
+                }
+                if(sugars[q] <= hunger){
+                    hunger = hunger - sugars[q];
+                    sugars[q] = -1;
+                }
+                q--;
+            }
+            bears[p].hunger = hunger;
+            p--;
+        }
+
+        for(int j = 1;j <= n; j++){
+            System.out.println(map.get(j).hunger);
+        }
+    }
+}
