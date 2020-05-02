@@ -1,0 +1,44 @@
+class Solution {
+    public String multiply(String num1, String num2) {
+        if(num1.equals("0") || num2.equals("0"))
+            return "0";
+        String res = "";
+        for(int i = num2.length() - 1; i >= 0; i--){
+            StringBuilder tmp = new StringBuilder();
+            int n1 = num2.charAt(i) - '0';
+            int carry = 0;
+            for(int j = 0; j < (num2.length() - i - 1); j++)
+                tmp.append(0);
+            int k = num1.length() - 1;
+            while(k>=0){
+                int n2 = num1.charAt(k) - '0';
+                int temp = n1 * n2 + carry;
+                tmp.append(temp%10);
+                carry = temp/10;
+                k--;
+            }
+            if(carry > 0 )
+                tmp.append(carry);
+            res = addStrings(res,tmp.reverse().toString());
+        }
+        return res;
+    }
+
+    public String addStrings(String num1, String num2) {
+        StringBuilder ans = new StringBuilder();
+        int i = num1.length() - 1, j = num2.length() - 1, carry = 0;
+        
+        while(i >= 0 || j >= 0){
+            int n1 = i >= 0 ? num1.charAt(i) - '0' : 0;
+            int n2 = j >= 0 ? num2.charAt(j) - '0' : 0;
+            int tmp = n1 + n2 + carry;
+            ans.append(tmp%10);
+            carry = tmp/10;
+            i--;
+            j--;
+        }
+        if(carry == 1)
+            ans.append(1);
+        return ans.reverse().toString();
+    }
+}
