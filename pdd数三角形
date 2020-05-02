@@ -1,0 +1,35 @@
+https://www.jianshu.com/p/fe73eb8ab966
+
+import java.util.*;
+
+public class Main {
+    static class Point{
+        int x;
+        int y;
+        public Point(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();//点的数量
+        Point[] points = new Point[n];
+        for(int i = 0; i < n; i++){
+            points[i] = new Point(sc.nextInt(),sc.nextInt());
+        }
+        int ans = 0;
+        for(int i = 0;i < n;i++){
+            for(int j = i+1; j < n; j++){
+                for(int k = j+1; k < n; k++){
+                    if((points[j].y - points[i].y)*(points[k].x - points[i].x) !=
+                            (points[k].y - points[i].y)*(points[j].x - points[i].x)){
+                        ans++;
+                    }
+                }
+            }
+        }
+        System.out.println(ans);
+    }
+}
