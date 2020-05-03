@@ -1,0 +1,97 @@
+A 国的手机号码由且仅由 N 位十进制数字(0-9)组成。一个手机号码中有至少 K 位数字相同则被定义为靓号。A 国的手机号可以有前导零，比如 000123456 是一个合法的手机号。
+小多想花钱将自己的手机号码修改为一个靓号。修改号码中的一个数字需要花费的金额为新数字与旧数字之间的差值。比如将 1 修改为 6 或 6 修改为 1 都需要花 5 块钱。
+给出小多现在的手机号码，问将其修改成一个靓号，最少需要多少钱？
+
+输入描述:
+第一行包含2个整数 N、K，分别表示手机号码数字个数以及靓号至少有 K 个数字相同。
+第二行包含 N 个字符，每个字符都是一个数字('0'-'9')，数字之间没有任何其他空白符。表示小多的手机号码。
+数据范围：
+2 <= K <= N <= 10000
+
+输出描述:
+第一行包含一个整数，表示修改成一个靓号，最少需要的金额。
+第二行包含 N 个数字字符，表示最少花费修改的新手机号。若有多个靓号花费都最少，则输出字典序最小的靓号。
+
+输入例子1:
+6 5
+787585
+
+输出例子1:
+4
+777577
+
+import java.util.*;
+
+public class Main {
+    static int phoneNumSize;
+    static int NeedRepeatCount;
+    static char[] phoneNum;
+    static int[] NumRepeatTime;
+
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        phoneNumSize = sc.nextInt();//手机号的长度
+        NeedRepeatCount = sc.nextInt();//重复次数
+        sc.nextLine();
+        phoneNum = sc.nextLine().toCharArray();//手机号
+        GetMinCost();
+    }
+
+    public static void GetNumRepeatTime(){
+        NumRepeatTime = new int[10];
+        for(int i = 0;i < phoneNumSize; i++){
+            NumRepeatTime[phoneNum[i] - '0'] ++;
+        }
+    }
+
+    public static void GetMinCost(){
+        int minCost = Integer.MAX_VALUE;//最小代价
+        char[] newNum = new char[phoneNumSize];//最佳手机号
+        GetNumRepeatTime();
+        for(int currentNum = 0; currentNum <= 9; currentNum++){
+            char[] replicate = new char[phoneNumSize];
+            System.arraycopy(phoneNum,0,replicate,0,phoneNumSize);
+            int restRepeatTime = NeedRepeatCount - NumRepeatTime[currentNum];
+            if(restRepeatTime <= 0){//不需要修改，就已经满足靓号需求
+                minCost = 0;
+                newNum = phoneNum;
+                break;
+            }
+            int currentCost = 0;
+            int upperNum = currentNum + 1;
+            int lowerNum = currentNum - 1;
+            while (restRepeatTime > 0){
+                //手机号中数字比current大，则从前往后改
+                if(upperNum <= 9){
+                    for(int i = 0; i < phoneNumSize;i++){
+                        if(replicate[i] - '0' == upperNum && restRepeatTime > 0){
+                            currentCost += upperNum - currentNum;
+                            replicate[i] = (char)('0' + currentNum);
+                            restRepeatTime--;
+                        }
+                    }
+                }
+                //手机号中数字比current小，则从后往前改
+                if(lowerNum >= 0){
+                    for(int i = phoneNumSize - 1; i >= 0; i--){
+                        if(replicate[i] - '0' == lowerNum && restRepeatTime > 0){
+                            currentCost += currentNum - lowerNum;
+                            replicate[i] = (char)('0' + currentNum);
+                            restRepeatTime--;
+                        }
+                    }
+                }
+                //扩大上下限
+                upperNum++;
+                lowerNum--;
+            }
+
+            if(currentCost < minCost){
+                minCost = currentCost;
+                newNum = replicate;
+            }
+        }
+        System.out.println(minCost);
+        System.out.println(newNum);
+    }
+}
