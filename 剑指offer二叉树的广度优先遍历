@@ -1,0 +1,19 @@
+//非递归
+//广度遍历必须借助其他的数据结构才能进行，比如最常见的Queue，(不能直接递归哦)
+public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
+        ArrayList<Integer> ans = new ArrayList<>();
+        if(root == null)
+            return ans;
+        //广度优先遍历
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);//起点入队
+        while (!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            ans.add(node.val);
+            if(node.left != null)
+                queue.offer(node.left);
+            if(node.right != null)
+                queue.offer(node.right);
+        }
+        return ans;
+    }
