@@ -1,0 +1,21 @@
+public TreeLinkNode GetNext(TreeLinkNode pNode)
+    {
+        TreeLinkNode node = pNode;
+        while (node.next != null){
+            node = node.next;
+        }
+        InOrder(node);
+        for (int i = 0; i < in.size(); i++){
+            if(pNode == in.get(i))
+                return i == in.size() - 1 ? null : in.get(i+1);
+        }
+        return null;
+    }
+
+    public void InOrder(TreeLinkNode pNode){
+        if(pNode != null){
+            InOrder(pNode.left);
+            in.add(pNode);
+            InOrder(pNode.right);
+        }
+    }
