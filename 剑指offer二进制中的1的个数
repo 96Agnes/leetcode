@@ -1,0 +1,8 @@
+public static int NumberOf1(int n) {
+        int count = 0;
+        while(n!=0){
+            count++;
+            n=n&(n-1);//将二进制中最右面的1变成0
+        }
+        return count;
+    }
