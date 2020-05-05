@@ -1,0 +1,12 @@
+public int cutRope(int target) {
+        if(target == 2)
+            return 1;
+        if(target == 3)
+            return 2;
+        int product = 1;
+        while (target > 5){
+            product *= 3;
+            target = target - 3;
+        }
+        return product * target;
+    }
