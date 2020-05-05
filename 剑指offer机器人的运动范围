@@ -1,0 +1,42 @@
+public class Solution {
+    int count;
+    int[][] direction = {{-1,0},{0,1},{1,0},{0,-1}};
+    public int movingCount(int threshold, int rows, int cols)
+    {
+        int[][] visit = new int[rows][cols];
+        getCount(threshold,rows,cols,0,0,visit);
+        return count;
+    }
+
+    public void getCount(int threshold,int rows,int cols,int rpos,int cpos,int[][] visit){
+        //回溯的出口
+        //当横纵坐标不满足要求时，回溯结束
+        if(rpos < 0 || cpos < 0 || rpos >= rows || cpos >= cols || visit[rpos][cpos] == 1 || !check(threshold,rpos,cpos))
+            return;
+        else{//该点满足要求
+            count = count + 1;
+            visit[rpos][cpos] = 1;//该点已走过
+            for(int i = 0; i < 4; i++){//有上下左右四种走法
+                int new_rpos = rpos + direction[i][0];
+                int new_cpos = cpos + direction[i][1];
+                getCount(threshold,rows,cols,new_rpos,new_cpos,visit);
+            }
+        }
+    }
+
+    public boolean check(int threshold,int rpos, int cpos){
+        if(getDigitSum(rpos) + getDigitSum(cpos) <= threshold)
+            return true;
+        else
+            return false;
+    }
+
+    public int getDigitSum(int num){
+        int sum = 0;
+        while (num > 0){
+            sum += num%10;
+            num = num/10;
+        }
+        return sum;
+    }
+}
