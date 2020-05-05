@@ -1,0 +1,36 @@
+public boolean hasPath(char[] matrix, int rows, int cols, char[] str)
+    {
+        char[][] array = new char[rows][cols];
+        for(int i = 0; i< rows; i++)
+            for(int j = 0; j < cols; j++){
+                array[i][j] = matrix[i*cols + j];
+            }
+
+        int[][] visit = new int[rows][cols];
+        for(int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++){
+                if(find(array,rows,cols,str,i,j,0,visit))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean find(char[][] array,int rows, int cols, char[] str, int rpos, int cpos, int spos, int[][] visit){
+        //rpos和cpos是当前走到的位置
+        //spos是字符串的下标
+        if(spos >= str.length)
+            return true;
+        if(rpos < 0 || cpos < 0 || rpos >= rows || cpos >= cols || visit[rpos][cpos] == 1 || array[rpos][cpos] != str[spos])
+            return false;
+        else{
+            spos = spos + 1;
+            visit[rpos][cpos] = 1;
+            boolean isfind = find(array,rows,cols,str,rpos-1,cpos,spos,visit) ||
+                    find(array,rows,cols,str,rpos,cpos + 1,spos,visit) ||
+                    find(array,rows,cols,str,rpos + 1,cpos,spos,visit) ||
+                    find(array,rows,cols,str,rpos,cpos - 1,spos,visit);
+            visit[rpos][cpos] = 0;
+            return isfind;
+        }
+    }
