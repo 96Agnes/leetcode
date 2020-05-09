@@ -1,0 +1,84 @@
+    /*
+    题目要求：不保留重复节点
+    特殊情况：pHead=null或者只有pHead节点
+    其它情况：
+    （头节点有可能就是重复节点，需要被删除，因此要建立辅助节点dmy）
+    pre代表当前非重复节点链表的tail
+    cur代表当前要被判断的节点，判断是否重复（cur=pre.next）
+    pre不为空时
+       cur==null：即pre已经是原始链表的尾节点，break
+       cur不为空：//判断是否重复
+          标志位初始化false
+          next不为空&&next.val == cur.val
+              cur后移
+              next后移
+          标志位=true
+             不加入，pre.next = next
+          标志位=false
+             加入，pre.next =cur
+
+    返回dmy.next
+     */
+    public static ListNode deleteDuplication(ListNode pHead)
+    {
+        if(pHead == null || pHead.next == null){
+            return pHead;
+        }
+        ListNode dmy = new ListNode(-1);
+        dmy.next = pHead;
+        ListNode pre = dmy;//正确输出的最后一个节点
+        while(pre != null){
+            ListNode cur = pre.next;
+            boolean IsDUP = false;
+            if(cur != null){
+                ListNode pNext = cur.next;
+                while(pNext != null && pNext.val == cur.val){
+                    cur = pNext;
+                    pNext = cur.next;
+                    IsDUP = true;
+                }
+                if(IsDUP){
+                    pre.next = pNext;//删除cur重复值
+                }else {
+                    //追加了非重复的值才能后移
+                    pre.next = cur;
+                    pre = pre.next;
+                }
+            }else
+                break;
+        }
+        return dmy.next;
+    }
+    
+    
+    
+   /*
+    题目要求：保留重复节点中的一个
+    特殊情况：pHead=null或者只有pHead节点
+    其它情况：
+    cur代表当前节点
+    cur==null：即已经到达原始链表的尾节点，返回
+    cur不为空：
+      next不为空&&next.val == cur.val
+          next后移
+      cur.next = next
+      cur = cur.next
+
+    返回head
+     */
+    public static ListNode deleteDuplication(ListNode pHead)
+    {
+        if(pHead == null || pHead.next == null){
+            return pHead;
+        }
+        ListNode cur = pHead;
+        while(cur != null){
+            ListNode pNext = cur.next;
+            while(pNext != null && pNext.val == cur.val){
+                pNext = pNext.next;
+            }
+            cur.next = pNext;
+            cur = cur.next;
+        }
+        return pHead;
+    } 
