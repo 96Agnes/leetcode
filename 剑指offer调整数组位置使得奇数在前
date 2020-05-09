@@ -1,0 +1,52 @@
+/*
+    要求：奇数位于前半部分，偶数位于后半部分
+
+    双指针：
+    while(p<q)
+        array[p] 为奇数：
+           p++；
+        array[p] 为偶数：
+          if array[q]为奇数：array[p] 和array[q]值交换
+          else q--；直到找到一个array[q]为奇数
+
+     如果要求保证奇数之间相对位置不变，偶数之间相对位置不变，那么：
+     while(i < len && j < len)
+        if(array[i] %2==0)//那么这个位置应该被移到后面
+           while(j <= array.length-1)
+              if array[j] % 2 == 0
+                 j++；
+              else//遇到奇数
+                  //从i到j之间的偶数都要后移
+                  int tmp = array[j] //先记录下来该奇数，移动偶数
+                  for k = j;k>i;k--
+                      array[k] = array[k-1];
+                  array[i] = tmp;
+                  i = i + 1;
+                  j = j + 1;
+           跳出最外层while
+        else
+           i++；
+     */
+    public static void reOrderArray(int [] array)  {
+        int i = 0;
+        int len = array.length;
+        while (i < len){
+            if(array[i] % 2 == 0) {
+                int j = i + 1;
+                while (j < len) {
+                    if (array[j] % 2 == 0)
+                        j++;
+                    else {
+                        int tmp = array[j];
+                        for (int k = j; k > i; k--)
+                            array[k] = array[k - 1];
+                        array[i] = tmp;
+                        i++;
+                        j++;
+                    }
+                }
+                break;
+            }else
+                i++;
+        }
+    }
